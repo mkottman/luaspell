@@ -1,0 +1,30 @@
+PROJECT(luaspell CXX)
+CMAKE_MINIMUM_REQUIRED(VERSION 2.8)
+
+FIND_PACKAGE(Lua51 REQUIRED)
+
+# no FIND_PACKAGE for hunspell, find manually
+FIND_PATH(HUNSPELL_INCLUDE_DIR hunspell.hxx
+	PATH_SUFFIXES include/hunspell
+	PATHS
+  ~/Library/Frameworks
+  /Library/Frameworks
+  /usr/local
+  /usr
+  /sw # Fink
+  /opt/local # DarwinPorts
+  /opt/csw # Blastwave
+  /opt
+)
+FIND_LIBRARY(HUNSPELL_LIBRARY NAMES hunspell)
+
+ADD_LIBRARY(spell MODULE spell.cpp)
+SET_TARGET_PROPERTIES(spell PROPERTIES PREFIX "")
+
+INCLUDE_DIRECTORIES(spell ${LUA_INCLUDE_DIR})
+INCLUDE_DIRECTORIES(spell ${HUNSPELL_INCLUDE_DIR})
+
+TARGET_LINK_LIBRARIES(spell ${LUA_LIBRARY})
+TARGET_LINK_LIBRARIES(spell ${HUNSPELL_LIBRARY})
+
+
