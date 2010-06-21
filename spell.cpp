@@ -56,7 +56,7 @@ static int l_add_dic(lua_State *L) {
 h:spell(word) -> [boolean]
 returns true, if the word is spelled correctly
 */
-int l_spell(lua_State *L) {
+static int l_spell(lua_State *L) {
 	THIS;
 	
 	const char * word = luaL_checkstring(L, 2);
@@ -70,7 +70,7 @@ int l_spell(lua_State *L) {
 h:suggest(word) -> [table]
 returns a table of suggestions for the word (or empty table)
 */
-int l_suggest(lua_State *L) {
+static int l_suggest(lua_State *L) {
 	THIS;
 	
 	const char * word = luaL_checkstring(L, 2);
@@ -83,8 +83,9 @@ int l_suggest(lua_State *L) {
 			lua_pushstring(L, list[i]);
 			lua_rawseti(L, -2, i+1);
 		}
-		sp->free_list(&list, n);
 	}
+	
+	sp->free_list(&list, n);
 	return 1;
 }
 
@@ -92,7 +93,7 @@ int l_suggest(lua_State *L) {
 h:analyze(word) -> [table]
 returns a table with morphological analysis of word
 */
-int l_analyze(lua_State *L) {
+static int l_analyze(lua_State *L) {
 	THIS;
 	
 	const char * word = luaL_checkstring(L, 2);
@@ -105,8 +106,8 @@ int l_analyze(lua_State *L) {
 			lua_pushstring(L, list[i]);
 			lua_rawseti(L, -2, i+1);
 		}
-		sp->free_list(&list, n);
 	}
+	sp->free_list(&list, n);
 	return 1;
 }
 
@@ -114,7 +115,7 @@ int l_analyze(lua_State *L) {
 h:stem(word) -> [table]
 returns a table of stems of word
 */
-int l_stem(lua_State *L) {
+static int l_stem(lua_State *L) {
 	THIS;
 	
 	const char * word = luaL_checkstring(L, 2);
@@ -127,8 +128,8 @@ int l_stem(lua_State *L) {
 			lua_pushstring(L, list[i]);
 			lua_rawseti(L, -2, i+1);
 		}
-		sp->free_list(&list, n);
 	}
+	sp->free_list(&list, n);
 	return 1;
 }
 
