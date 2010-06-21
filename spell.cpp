@@ -39,6 +39,17 @@ extern "C" {
 #define THIS \
 	Hunspell *sp = *(Hunspell**) luaL_checkudata(L, 1, MT)
 
+#define RETURN_LIST               \
+	lua_createtable(L, n, 0);       \
+	if (n>0) {                      \
+		for (int i=0; i<n; i++) {     \
+			lua_pushstring(L, list[i]); \
+			lua_rawseti(L, -2, i+1);    \
+		}                             \
+	}                               \
+	sp->free_list(&list, n);        \
+	return 1
+
 /**
 h:add_dic(dic_path [, key]) -> []
 load extra dictionaries (only dic files)
@@ -76,17 +87,7 @@ static int l_suggest(lua_State *L) {
 	const char * word = luaL_checkstring(L, 2);
 	char ** list = NULL;
 	int n = sp->suggest(&list, word);
-	
-	lua_createtable(L, n, 0);
-	if (n>0) {
-		for (int i=0; i<n; i++) {
-			lua_pushstring(L, list[i]);
-			lua_rawseti(L, -2, i+1);
-		}
-	}
-	
-	sp->free_list(&list, n);
-	return 1;
+	RETURN_LIST;
 }
 
 /**
@@ -100,15 +101,7 @@ static int l_analyze(lua_State *L) {
 	char **list = NULL;
 	
 	int n = sp->analyze(&list, word);
-	lua_createtable(L, n, 0);
-	if (n>0) {
-		for (int i=0; i<n; i++) {
-			lua_pushstring(L, list[i]);
-			lua_rawseti(L, -2, i+1);
-		}
-	}
-	sp->free_list(&list, n);
-	return 1;
+	RETURN_LIST;
 }
 
 /**
@@ -122,15 +115,7 @@ static int l_stem(lua_State *L) {
 	char **list;
 	
 	int n = sp->stem(&list, word);
-	lua_createtable(L, n, 0);
-	if (n>0) {
-		for (int i=0; i<n; i++) {
-			lua_pushstring(L, list[i]);
-			lua_rawseti(L, -2, i+1);
-		}
-	}
-	sp->free_list(&list, n);
-	return 1;
+	RETURN_LIST;
 }
 
 luaL_Reg spell_methods[] = {
