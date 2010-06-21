@@ -34,10 +34,17 @@ end
 
 
 local root = s:stem(okword)
-assert(type(root) == "table", 'analyze() does not return a table: '..type(root))
+assert(type(root) == "table", 'stem() does not return a table: '..type(root))
 print('Roots of '..okword)
 for _,v in ipairs(root) do
 	print('>', v)
 end
+
+print(unpack(s:analyze('cars')))
+local gen = s:generate('word', 'cars')
+print(#gen, unpack(gen))
+local gen2 = s:generate('word', {'fl:S'})
+print(#gen2, unpack(gen2))
+
 
 print('OK')

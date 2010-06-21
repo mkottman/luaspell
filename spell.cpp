@@ -118,9 +118,45 @@ static int l_stem(lua_State *L) {
 	RETURN_LIST;
 }
 
+/**
+h:generate(word, example:string) -> [table]
+generate word(s) by example
+
+h:generate(word, desc:table) -> [table]
+generate word(s) by description (dictionary dependent)
+*/
+static int l_generate(lua_State *L) {
+	THIS;
+	
+	const char * word = luaL_checkstring(L, 2);
+
+	if (lua_type(L, 3) == LUA_TSTRING) {
+		const char * example = luaL_checkstring(L, 3);
+		char **list;
+		int n = sp->generate(&list, word, example);
+		RETURN_LIST;
+	} else if (lua_type(L, 3) == LUA_TTABLE) {
+		int howmany = lua_objlen(L, 3);
+		char ** desc = (char**) calloc(howmany, sizeof(char*));
+		for (int i=0; i<howmany; i++) {
+			lua_rawgeti(L, 3, i+1);
+			desc[i] = (char*) lua_tostring(L, -1); // nasty
+		}
+
+		char **list;
+		int n = sp->generate(&list, word, desc, howmany);
+
+		free(desc);
+		RETURN_LIST;
+	} else {
+		luaL_arg
+	}
+}
+
 luaL_Reg spell_methods[] = {
 	{"add_dic", l_add_dic},
 	{"analyze", l_analyze},
+	{"generate", l_generate},
 	{"spell", l_spell},
 	{"stem", l_stem},
 	{"suggest", l_suggest},
