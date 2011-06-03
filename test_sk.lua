@@ -1,4 +1,4 @@
-require 'spell'
+local spell = require 'spell'
 
 -- dictionaries from http://sk-spell.sk.cx/hunspell-sk
 local sp = spell('/usr/share/hunspell/sk_SK.aff', '/usr/share/hunspell/sk_SK.dic')

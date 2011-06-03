@@ -1,4 +1,4 @@
-require 'spell'
+local spell = require 'spell'
 
 assert(spell, 'spell not loaded')
 assert(type(spell) == "function", 'spell is not a function')

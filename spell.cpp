@@ -149,7 +149,7 @@ static int l_generate(lua_State *L) {
 		free(desc);
 		RETURN_LIST;
 	} else {
-		luaL_arg
+		return luaL_argerror(L, 3, "string or table expected");
 	}
 }
 
@@ -197,7 +197,6 @@ LUA_API int luaopen_spell(lua_State *L) {
 	createMetatable(L, MT, spell_methods);
 
 	lua_pushcfunction(L, g_spell);
-	lua_setglobal(L, "spell");
 	return 1;
 }
 }
