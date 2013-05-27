@@ -26,6 +26,8 @@ Usage
 * `sc:stem(word:string) -> table` - returns a table of stems of word
 * `sc:generate(word:string, example:string) -> table` - generate word(s) by example
 * `sc:generate(word:table, desc:table) -> table` - generate word(s) by description (dictionary dependent)
+* `sc:add_word(word:string) -> nothing` - adds a word to the main dictionary (in memory)
+* `sc:get_dic_encoding() -> string` - returns the current encoding (dictionary dependent)
 
 License
 -------

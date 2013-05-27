@@ -153,6 +153,26 @@ static int l_generate(lua_State *L) {
 	}
 }
 
+/**
+h:add_word(word) -> void
+adds a word to the dictionary
+*/
+static int l_add_word(lua_State *L) {
+	THIS;
+
+	const char * word = luaL_checkstring(L, 2);
+	sp->add(word);
+	return 0;
+}
+
+static int l_get_dic_encoding(lua_State *L) {
+	THIS;
+
+	char* encoding = sp->get_dic_encoding();
+	lua_pushstring(L, encoding);
+	return 1;
+}
+
 luaL_Reg spell_methods[] = {
 	{"add_dic", l_add_dic},
 	{"analyze", l_analyze},
@@ -160,6 +180,8 @@ luaL_Reg spell_methods[] = {
 	{"spell", l_spell},
 	{"stem", l_stem},
 	{"suggest", l_suggest},
+	{"add_word", l_add_word},
+	{"get_dic_encoding", l_get_dic_encoding},
 	{NULL, NULL}
 };
 
